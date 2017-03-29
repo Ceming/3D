@@ -24,14 +24,14 @@
 void add_box( struct matrix * edges,
 	      double x, double y, double z,
 	      double width, double height, double depth ) {
-  add_point(edges, x, y, z);
-  add_point(edges, x + width, y, z);
-  add_point(edges, x, y - height, z);
-  add_point(edges, x, y, z - depth);
-  add_point(edges, x + width, y - height, z - depth);
-  add_point(edges, x + width, y - height, z);
-  add_point(edges, x + width, y, z - depth);
-  add_point(edges, x, y - height, z - depth);
+  add_edge(edges, x, y, z, x, y, z);
+  add_edge(edges, x + width, y, z, x + width, y, z);
+  add_edge(edges, x, y - height, x, y - height, z);
+  add_edge(edges, x, y, z - depth, x, y, z - depth);
+  add_edge(edges, x + width, y - height, z - depth, x + width, y - height, z - depth);
+  add_edge(edges, x + width, y - height, z, x + width, y - height, z);
+  add_edge(edges, x + width, y, z - depth, x + width, y, z - depth);
+  add_edge(edges, x, y - height, z - depth, x, y - height, z - depth);
 }
 
 /*======== void add_sphere() ==========
@@ -50,6 +50,7 @@ void add_box( struct matrix * edges,
 void add_sphere( struct matrix * edges, 
 		 double cx, double cy, double cz,
 		 double r, double step ) {
+  
   return;
 }
 
@@ -67,6 +68,24 @@ void add_sphere( struct matrix * edges,
   ====================*/
 struct matrix * generate_sphere(double cx, double cy, double cz,
 				double r, double step ) {
+  struct matrix * edges;
+  double x, y, z, rt, ct;
+ 
+  int n = 1 / step; 
+  int rot, cir;
+
+  for (rot = 0; rot <= 360, rot++){
+    for (cir = 0; cir <= n; cir++) {
+      rt = 1 / rot;
+      ct = 1 / cir;
+
+      x = r * cos(M_PI * ct) + cx;
+      y = r * sin(M_PI * ct) * cos(M_PI * 2 * rt) cy;
+      z = r * sin(M_PI * ct) * sin(M_PI * 2 * rt) cy;
+      
+      add_edge(edges, x, y, z, x, y, z);
+    }
+  }
   return NULL;
 }
 
