@@ -57,6 +57,7 @@ void add_sphere( struct matrix * edges,
     x = spherePoints->m[0][col];
     y = spherePoints->m[1][col];
     z = spherePoints->m[2][col];
+    add_edge(edges, x, y, z, x, y, z);
   }
 }
 
@@ -74,25 +75,26 @@ void add_sphere( struct matrix * edges,
   ====================*/
 struct matrix * generate_sphere(double cx, double cy, double cz,
 				double r, double step ) {
-  struct matrix * edges;
-  double x, y, z, rt, ct;
+  struct matrix * points = new_matrix(4, 1);
+  double x, y, z;
  
   int n = 1 / step; 
   int rot, cir;
 
-  for (rot = 0; rot <= n; rot++){
-    for (cir = 0; cir <= n; cir++) {
-      rt = 1 / rot;
-      ct = 1 / cir;
+  int i, j;
+  for (i = 0; i <= n; i++){
+    for (j = 0; j <= n; j++) {
+      rot = i / n;
+      cir = j / n;
 
-      x = r * cos(M_PI * ct) + cx;
-      y = r * sin(M_PI * ct) * cos(M_PI * 2 * rt) + cy;
-      z = r * sin(M_PI * ct) * sin(M_PI * 2 * rt) + cz;
+      x = r * cos(M_PI * cir) + cx;
+      y = r * sin(M_PI * cir) * cos(M_PI * 2 * rot) + cy;
+      z = r * sin(M_PI * cir) * sin(M_PI * 2 * rot) + cz;
       
-      add_edge(edges, x, y, z, x, y, z);
+      add_point(points, x, y, z);
     }
   }
-  return edges;
+  return points;
 }
 
 /*======== void add_torus() ==========
@@ -119,6 +121,7 @@ void add_torus( struct matrix * edges,
     x = torusPoints->m[0][col];
     y = torusPoints->m[1][col];
     z = torusPoints->m[2][col];
+    add_edge(edges, x, y, z, x, y, z);
   }
 }
 
@@ -136,25 +139,26 @@ void add_torus( struct matrix * edges,
   ====================*/
 struct matrix * generate_torus( double cx, double cy, double cz,
 				double r1, double r2, double step ) {
-  struct matrix * edges;
-  double x, y, z, rt, ct;
+  struct matrix * points = new_matrix(4, 1);
+  double x, y, z;
  
   int n = 1 / step; 
   int rot, cir;
 
-  for (rot = 0; rot <= n; rot++){
-    for (cir = 0; cir <= n; cir++) {
-      rt = 1 / rot;
-      ct = 1 / cir;
+  int i, j;
+  for (i = 0; i <= n; i++){
+    for (j = 0; j <= n; j++) {
+      rot = i / n;
+      cir = j / n;
 
-      x = cos(rt) * (r1 * cos (ct * 2 * M_PI) + r2) + cx;
-      y = r1 * sin(ct * 2 * M_PI) + cy;
-      z = -1 * sin(rt) * (r1 * cos(ct) + r2) + cz;
+      x = cos(rot * M_PI) * (r1 * cos (cir * 2 * M_PI) + r2) + cx;
+      y = r1 * sin(cir * 2 * M_PI) + cy;
+      z = -1 * sin(rot * M_PI) * (r1 * cos(cir) + r2) + cz;
       
-      add_edge(edges, x, y, z, x, y, z);
+      add_point(points, x, y, z);
     }
   }
-  return edges;
+  return points;
 }
 
 /*======== void add_circle() ==========
