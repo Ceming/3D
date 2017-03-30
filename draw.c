@@ -79,17 +79,17 @@ struct matrix * generate_sphere(double cx, double cy, double cz,
   double x, y, z;
  
   int n = 1 / step; 
-  int rot, cir;
+  double rot, cir;
 
   int i, j;
   for (i = 0; i <= n; i++){
     for (j = 0; j <= n; j++) {
-      rot = i / n;
-      cir = j / n;
+      rot = 2 * M_PI * i / n;
+      cir = M_PI * j / n;
 
-      x = r * cos(M_PI * cir) + cx;
-      y = r * sin(M_PI * cir) * cos(M_PI * 2 * rot) + cy;
-      z = r * sin(M_PI * cir) * sin(M_PI * 2 * rot) + cz;
+      x = r * cos(cir) + cx;
+      y = r * sin(cir) * cos(rot) + cy;
+      z = r * sin(cir) * sin(rot) + cz;
       
       add_point(points, x, y, z);
     }
@@ -143,17 +143,17 @@ struct matrix * generate_torus( double cx, double cy, double cz,
   double x, y, z;
  
   int n = 1 / step; 
-  int rot, cir;
+  double rot, cir;
 
   int i, j;
   for (i = 0; i <= n; i++){
     for (j = 0; j <= n; j++) {
-      rot = i / n;
-      cir = j / n;
+      rot = M_PI * 2 * i / n;
+      cir = 2 * M_PI * j / n;
 
-      x = cos(rot * M_PI) * (r1 * cos (cir * 2 * M_PI) + r2) + cx;
-      y = r1 * sin(cir * 2 * M_PI) + cy;
-      z = -1 * sin(rot * M_PI) * (r1 * cos(cir) + r2) + cz;
+      x = cos(rot) * (r1 * cos (cir) + r2) + cx;
+      y = r1 * sin(cir) + cy;
+      z = -1 * sin(rot) * (r1 * cos(cir) + r2) + cz;
       
       add_point(points, x, y, z);
     }

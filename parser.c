@@ -94,7 +94,7 @@ void parse_file ( char * filename,
     int type;
     double step = 0.01;
     double r1, r2;
-
+    
     if ( strncmp(line, "box", strlen(line)) == 0) {
       fgets(line, sizeof(line), f);
 
@@ -128,6 +128,10 @@ void parse_file ( char * filename,
 	     xvals, yvals, zvals, &r);
       add_circle( edges, xvals[0], yvals[0], zvals[0], r, step);
     }//end of circle
+
+    else if ( strncmp(line, "clear", strlen(line)) == 0 ) {
+      edges->lastcol=0;
+    }
 
     else if ( strncmp(line, "hermite", strlen(line)) == 0 ||
 	      strncmp(line, "bezier", strlen(line)) == 0 ) {
